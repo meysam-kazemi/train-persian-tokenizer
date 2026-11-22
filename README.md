@@ -147,6 +147,16 @@ Normalization is a modeling decision. Keep the same normalization policy for tok
 
 ## Tokenizer evaluation
 
+To try the trained tokenizer interactively, open `test_tokenizer.ipynb`:
+
+```bash
+uv run --with jupyterlab jupyter lab test_tokenizer.ipynb
+```
+
+Run the cells in order, then edit the sample text to inspect token IDs, decoding,
+Persian normalization, and batch padding. The notebook loads the local tokenizer
+from the output directory in `configs/default.yaml`.
+
 The script reports:
 
 - vocabulary size;

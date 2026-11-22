@@ -226,4 +226,5 @@ __marimo__/
 # data
 data/
 
-
+# artifacts
+artifacts/
