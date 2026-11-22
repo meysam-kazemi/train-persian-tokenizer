@@ -1,5 +1,5 @@
 project:
-  name: persian-tokenizer
+  name: train-persian-tokenizer
   seed: 42
   output_dir: artifacts/persian-bpe-32k
   data_dir: data/processed
