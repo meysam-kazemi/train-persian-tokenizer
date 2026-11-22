@@ -42,8 +42,8 @@ persian-tokenizer-lab/
 ## Installation
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/persian-tokenizer-lab.git
-cd persian-tokenizer-lab
+git clone https://github.com/meysam-kazemi/train-persian-tokenizer.git
+cd train-persian-tokenizer
 
 python -m venv .venv
 ```
