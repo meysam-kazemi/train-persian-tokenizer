@@ -27,14 +27,17 @@ persian-tokenizer-lab/
 ├── data/                  # generated locally; do not commit
 ├── artifacts/             # generated tokenizer; do not commit by default
 ├── logs/                  # generated logs
-├── requirements.txt
+├── pyproject.toml         # project metadata and dependencies
+├── uv.lock                # locked dependency versions
+├── .python-version        # Python version for uv
 ├── .gitignore
 └── README.md
 ```
 
 ## Requirements
 
-- Python 3.10 or newer
+- Python 3.13 or newer (uv can install it automatically)
+- [uv](https://docs.astral.sh/uv/getting-started/installation/)
 - Internet access to Hugging Face Hub
 - Enough disk space for the selected datasets and processed corpus
 - A GPU is not required: tokenizer training runs on CPU
@@ -45,33 +48,17 @@ persian-tokenizer-lab/
 git clone https://github.com/meysam-kazemi/train-persian-tokenizer.git
 cd train-persian-tokenizer
 
-python -m venv .venv
+uv sync --locked
 ```
 
-Activate the environment:
-
-**Linux/macOS**
-```bash
-source .venv/bin/activate
-```
-
-**Windows PowerShell**
-```powershell
-.venv\Scripts\Activate.ps1
-```
-
-Install dependencies:
-
-```bash
-pip install -r requirements.txt
-```
+This creates `.venv` and installs the dependencies recorded in `uv.lock`.
 
 ## Train
 
 From the repository root:
 
 ```bash
-python src/train.py
+uv run src/train.py
 ```
 
 The first run streams the configured Hugging Face datasets, filters and deduplicates documents, and writes:
@@ -98,13 +85,13 @@ The exact files can vary slightly by Transformers version.
 If you change dataset settings or normalization, rebuild the corpus:
 
 ```bash
-python src/train.py --rebuild-corpus
+uv run src/train.py --rebuild-corpus
 ```
 
 ### Compare against Qwen
 
 ```bash
-python src/train.py --compare-qwen
+uv run src/train.py --compare-qwen
 ```
 
 This downloads only Qwen's tokenizer, not its model weights. The comparison measures token counts; it does not measure language-model quality.
@@ -210,7 +197,7 @@ Reduce each source's `max_documents`, reduce `max_total_documents`, or disable l
 For gated datasets, log in with:
 
 ```bash
-hf auth login
+uv run hf auth login
 ```
 
 Only use datasets you are authorized to access.
