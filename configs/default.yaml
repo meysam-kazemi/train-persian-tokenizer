@@ -1,0 +1,106 @@
+project:
+  name: persian-tokenizer
+  seed: 42
+  output_dir: artifacts/persian-bpe-32k
+  data_dir: data/processed
+  log_dir: logs
+
+data:
+  # A cap is applied independently to each source. Increase gradually.
+  max_total_documents: 250000
+  min_characters: 80
+  max_characters: 20000
+  min_persian_characters: 20
+  min_persian_ratio: 0.10
+  shuffle_buffer: 5000
+  deduplicate: true
+  # Keep source documents in a local text file so tokenizer training can be
+  # repeated without downloading the datasets again.
+  save_corpus: true
+
+  # Dataset names/configurations can change on the Hub. The loader tries
+  # each config in "configs" in order; null means use the default config.
+  # Set enabled:false to skip a source. Review each dataset's license/terms.
+  datasets:
+    - name: wikimedia/wikipedia
+      configs: ["20231101.fa"]
+      split: train
+      text_fields: ["text"]
+      max_documents: 30000
+      enabled: true
+
+    - name: oscar-corpus/OSCAR-2301
+      configs: ["unshuffled_deduplicated_fa", "unshuffled_original_fa"]
+      split: train
+      text_fields: ["text"]
+      max_documents: 30000
+      enabled: true
+
+    - name: uonlp/CulturaX
+      configs: ["fa"]
+      split: train
+      text_fields: ["text"]
+      max_documents: 30000
+      enabled: true
+
+    - name: allenai/mc4
+      configs: ["fa"]
+      split: train
+      text_fields: ["text"]
+      max_documents: 30000
+      enabled: true
+
+    - name: SLPL/naab
+      configs: [null]
+      split: train
+      text_fields: ["text", "content", "paragraph"]
+      max_documents: 30000
+      enabled: true
+
+    - name: ali619/corpus-dataset-normalized-for-persian-farsi
+      configs: [null]
+      split: train
+      text_fields: ["text"]
+      max_documents: 30000
+      enabled: true
+
+    - name: mshojaei77/PersianCorpus_merged
+      configs: [null]
+      split: train
+      text_fields: ["text", "content"]
+      max_documents: 30000
+      enabled: true
+
+    - name: taesiri/TinyStories-Farsi
+      configs: [null]
+      split: train
+      text_fields: ["text", "story", "content"]
+      max_documents: 10000
+      enabled: true
+
+tokenizer:
+  algorithm: BPE
+  vocab_size: 32000
+  min_frequency: 2
+  limit_alphabet: 1000
+  byte_level: true
+  add_prefix_space: false
+  special_tokens:
+    - "<unk>"
+    - "<pad>"
+    - "<bos>"
+    - "<eos>"
+  output_name: persian-bpe-tokenizer
+
+evaluation:
+  test_texts:
+    - "سلام، حالت چطوره؟"
+    - "من می‌خواهم یک مدل زبانی فارسی آموزش بدهم."
+    - "یادگیری ماشین یکی از شاخه‌های هوش مصنوعی است."
+    - "قیمت یک کیف چرم در ایران چقدر است؟"
+    - "برنامه‌نویسی با پایتون بسیار جذاب است."
+    - "امروز هوا خیلی زیباست و می‌خواهم به پارک بروم."
+    - "The weather is beautiful today."
+    - "Artificial intelligence is changing the world."
+  compare_qwen: false
+  qwen_model: Qwen/Qwen2.5-7B-Instruct
