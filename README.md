@@ -1,4 +1,4 @@
-# Persian Tokenizer Lab
+# Persian Tokenizer
 
 A reproducible project for collecting Persian text from Hugging Face Datasets, normalizing and filtering it, training a byte-level BPE tokenizer, and evaluating tokenization efficiency.
 
@@ -219,3 +219,28 @@ Cite each dataset according to its own dataset card when publishing research or 
 ## License
 
 Choose a license for this repository's code separately from the licenses and terms of the datasets. Dataset content is not bundled with this repository.
+
+## Language-model training experiments
+
+The standalone [Kaggle Qwen3 training notebook](notebooks/train_qwen3_persian_kaggle.ipynb)
+adds token-embedding warm-up, full-model continued pretraining, a separate random-initialization
+experiment, and optional assistant-only instruction tuning. It uses its own pinned Kaggle
+environment and does not change this project's tokenizer dependencies.
+
+Read the [notebook audit, corpus assessment, and training guidance](docs/persian_lm_training_review.md)
+first. Start with `MODE="adapt"`; `MODE="scratch"` discards Qwen's pretrained transformer weights.
+The default run is a small pipeline experiment, not enough training to reproduce a capable base model.
+Upload the notebook to Kaggle, attach `meysamrg/persian-tokenizer`, enable Internet and a GPU,
+and run in order. No Kaggle API credential is embedded or required.
+
+The notebook embeds [the training helpers](src/lm_pipeline.py) so it runs without cloning
+this repository. After editing those helpers or notebook text, rebuild it with:
+
+```bash
+uv run tools/build_training_notebook.py
+```
+
+Correctness tests for vocabulary mapping, staged gradients, export, packing, and assistant-only
+labels live in `tests/test_lm_pipeline.py`. Run them in a separate Python 3.11/3.12 environment
+with the notebook's training dependencies, PyTorch, `pytest`, and `nbformat`; the tokenizer
+project's default environment does not include PyTorch.
