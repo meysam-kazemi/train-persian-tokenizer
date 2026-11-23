@@ -81,8 +81,8 @@ data:
 tokenizer:
   algorithm: BPE
   vocab_size: 32000
-  min_frequency: 2
-  limit_alphabet: 1000
+  min_frequency: 4
+  limit_alphabet: 2000
   byte_level: true
   add_prefix_space: false
   special_tokens:
